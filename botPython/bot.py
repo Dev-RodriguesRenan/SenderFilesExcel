@@ -18,10 +18,12 @@ print(f"numero á enviar conteudo: {PHONE_NUMBER}")
 
 class BiBot(DesktopBot):
 
-    def __init__(self):
+    def __init__(self, debug):
 
-        self.url_whats = f"https://web.whatsapp.com/accept?code={ID_GROUP}"
-        # self.url_whats = f"https://web.whatsapp.com/send/?phone=%2B{PHONE_NUMBER}&text&type=phone_number&app_absent=0"
+        if not debug:
+            self.url_whats = f"https://web.whatsapp.com/accept?code={ID_GROUP}"
+        else:
+            self.url_whats = f"https://web.whatsapp.com/send/?phone=%2B{PHONE_NUMBER}&text&type=phone_number&app_absent=0"
         self.path_bi = data_path
         super().__init__()
 
@@ -88,8 +90,8 @@ class BiBot(DesktopBot):
         )
 
 
-def main():
-    bi_bot = BiBot()
+def main(debug=False):
+    bi_bot = BiBot(debug=debug)
     bi_bot.run()
 
 
@@ -100,9 +102,9 @@ if __name__ == "__main__":
                 f">> {Fore.WHITE}{time.strftime('%X')} [INFO] {Fore.MAGENTA}Debug mode activate [INFO] {Style.RESET_ALL}",
                 end="\r",
             )
-            main()
+            main(debug=True)
     else:
-        schedule.every(1).day.at("12:00").do(main)
+        schedule.every(1).day.at("11:43:30").do(main)
         while True:
             print(
                 f">> {Fore.BLUE}{time.strftime('%X')} -- {Fore.GREEN}Aguardando o horario correto!!{Style.RESET_ALL}",
