@@ -1,6 +1,8 @@
+import datetime
 import os
 import sys
 import time
+from urllib.parse import quote
 import schedule
 from dotenv import load_dotenv
 from colorama import Fore, Style
@@ -19,11 +21,27 @@ print(f"numero á enviar conteudo: {PHONE_NUMBER}")
 class BiBot(DesktopBot):
 
     def __init__(self, debug):
+        self.text = f"""
+🔔 Lembrete Importante!
 
-        if not debug:
+Não deixem de acessar nossa ferramenta de análise de dados! 📊
+Lá, vocês conseguem acompanhar o desempenho diário, semanal, mensal e trimestral, tendo uma visão completa dos resultados alcançados.
+
+🚀 Acompanhem seu progresso e mantenham-se informados sobre o seu desempenho!
+Qualquer dúvida, estamos à disposição para ajudar!
+
+Bom final de semana e ótimas análises! 💪😎
+
+> {datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+"""
+        self.debug = debug
+        if not self.debug:
             self.url_whats = f"https://web.whatsapp.com/accept?code={ID_GROUP}"
         else:
-            self.url_whats = f"https://web.whatsapp.com/send/?phone=%2B{PHONE_NUMBER}&text&type=phone_number&app_absent=0"
+            self.text = quote(self.text)
+            self.url_whats = f"https://web.whatsapp.com/send/?phone=%2B{PHONE_NUMBER}&text={self.text}&type=phone_number&app_absent=0"
+
+        print(self.url_whats)
         self.path_bi = data_path
         super().__init__()
 
@@ -33,11 +51,18 @@ class BiBot(DesktopBot):
 
     def send_attachment(self):
         # Searching for element 'MORE '
+        #  Procura o more pra precissionar enter e enviar o txt
         if not self.find("MORE", matching=0.87, waiting_time=10000):
+            self.not_found("MORE")
+        if not self.debug:
+            self.paste(self.text)
+
+        # Searching for element 'MORE '
+        if not self.find("MORE", matching=0.87, waiting_time=15000):
             self.not_found("MORE")
         self.click()
         # Searching for element 'DOCUMENTS '
-        if not self.find("DOCUMENTS", matching=0.87, waiting_time=10000):
+        if not self.find("DOCUMENTS", matching=0.87, waiting_time=15000):
             self.not_found("DOCUMENTS")
         self.click()
         # seleciona o arquivo
@@ -47,7 +72,7 @@ class BiBot(DesktopBot):
 
     def select_attachment(self):
         # Searching for element 'MENU_EXPLORER '
-        if not self.find("MENU_EXPLORER", matching=0.87, waiting_time=10000):
+        if not self.find("MENU_EXPLORER", matching=0.87, waiting_time=15000):
             self.not_found("MENU_EXPLORER")
 
         self.control_key("l")
@@ -63,14 +88,14 @@ class BiBot(DesktopBot):
             self.click_relative(69, 13)
         self.paste("links BI Vendedores")
         # Searching for element 'OPEN_FILE '
-        if not self.find("OPEN_FILE", matching=0.87, waiting_time=10000):
+        if not self.find("OPEN_FILE", matching=0.87, waiting_time=15000):
             self.not_found("OPEN_FILE")
 
         self.enter()
 
     def subimit_attachment(self):
         # Searching for element 'ATTACHMENT_XLSX '
-        if not self.find("ATTACHMENT_XLSX", matching=0.87, waiting_time=10000):
+        if not self.find("ATTACHMENT_XLSX", matching=0.87, waiting_time=15000):
             self.not_found("ATTACHMENT_XLSX")
 
         self.enter()
@@ -103,8 +128,14 @@ if __name__ == "__main__":
                 end="\r",
             )
             main(debug=True)
+        elif sys.argv[1] == "debug-group":
+            print(
+                f">> {Fore.WHITE}{time.strftime('%X')} [INFO] {Fore.MAGENTA}Debug mode activate [INFO] {Style.RESET_ALL}",
+                end="\r",
+            )
+            main(debug=False)
     else:
-        schedule.every(1).day.at("11:43:30").do(main)
+        schedule.every(1).day.at("12:03").do(main)
         while True:
             print(
                 f">> {Fore.BLUE}{time.strftime('%X')} -- {Fore.GREEN}Aguardando o horario correto!!{Style.RESET_ALL}",
