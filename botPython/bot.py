@@ -1,21 +1,27 @@
 import os
 import sys
 import time
-from botcity.core import DesktopBot
-from colorama import Fore, Style
 import schedule
+from dotenv import load_dotenv
+from colorama import Fore, Style
+from botcity.core import DesktopBot
 
-
+load_dotenv()
 data_path = os.path.join(os.getcwd(), "data")
 os.makedirs(data_path, exist_ok=True)
 """python -m cookiecutter https://github.com/botcity-dev/bot-python-template/archive/v2.zip"""
+ID_GROUP = os.getenv("ID_GROUP")
+print(f"grupo á enviar conteudo: {ID_GROUP}")
+PHONE_NUMBER = os.getenv("PHONE_NUMBER")
+print(f"numero á enviar conteudo: {PHONE_NUMBER}")
 
 
 class BiBot(DesktopBot):
 
     def __init__(self):
-        self.url_whats = "https://web.whatsapp.com/accept?code=EZ5c4EE0fab9ZADIpoJgZ6"
-        # self.url_whats = "https://web.whatsapp.com/send/?phone=%2B5519998722472&text&type=phone_number&app_absent=0"
+
+        self.url_whats = f"https://web.whatsapp.com/accept?code={ID_GROUP}"
+        # self.url_whats = f"https://web.whatsapp.com/send/?phone=%2B{PHONE_NUMBER}&text&type=phone_number&app_absent=0"
         self.path_bi = data_path
         super().__init__()
 
