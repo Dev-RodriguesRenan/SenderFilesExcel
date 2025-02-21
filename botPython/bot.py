@@ -135,7 +135,7 @@ if __name__ == "__main__":
             )
             main(debug=False)
     else:
-        schedule.every(1).day.at("12:03").do(main)
+        schedule.every(1).day.at("12:00").do(main)
         while True:
             print(
                 f">> {Fore.BLUE}{time.strftime('%X')} -- {Fore.GREEN}Aguardando o horario correto!!{Style.RESET_ALL}",
