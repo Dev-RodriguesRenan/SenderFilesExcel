@@ -1,0 +1,106 @@
+import os
+import sys
+import time
+from botcity.core import DesktopBot
+from colorama import Fore, Style
+import schedule
+
+
+data_path = os.path.join(os.getcwd(), "data")
+os.makedirs(data_path, exist_ok=True)
+"""python -m cookiecutter https://github.com/botcity-dev/bot-python-template/archive/v2.zip"""
+
+
+class BiBot(DesktopBot):
+
+    def __init__(self):
+        self.url_whats = "https://web.whatsapp.com/accept?code=EZ5c4EE0fab9ZADIpoJgZ6"
+        # self.url_whats = "https://web.whatsapp.com/send/?phone=%2B5519998722472&text&type=phone_number&app_absent=0"
+        self.path_bi = data_path
+        super().__init__()
+
+    def start_browser(self):
+        self.browse(self.url_whats)
+        self.wait(30_000)
+
+    def send_attachment(self):
+        # Searching for element 'MORE '
+        if not self.find("MORE", matching=0.87, waiting_time=10000):
+            self.not_found("MORE")
+        self.click()
+        # Searching for element 'DOCUMENTS '
+        if not self.find("DOCUMENTS", matching=0.87, waiting_time=10000):
+            self.not_found("DOCUMENTS")
+        self.click()
+        # seleciona o arquivo
+        self.select_attachment()
+        # envia o arquivo
+        self.subimit_attachment()
+
+    def select_attachment(self):
+        # Searching for element 'MENU_EXPLORER '
+        if not self.find("MENU_EXPLORER", matching=0.87, waiting_time=10000):
+            self.not_found("MENU_EXPLORER")
+
+        self.control_key("l")
+        self.paste(self.path_bi)
+        self.enter()
+
+        # Searching for element 'FILENAME '
+        if not self.find("FILENAME", matching=0.87, waiting_time=10000):
+            self.not_found("FILENAME")
+            for _ in range(6):
+                self.tab()
+        else:
+            self.click_relative(69, 13)
+        self.paste("links BI Vendedores")
+        # Searching for element 'OPEN_FILE '
+        if not self.find("OPEN_FILE", matching=0.87, waiting_time=10000):
+            self.not_found("OPEN_FILE")
+
+        self.enter()
+
+    def subimit_attachment(self):
+        # Searching for element 'ATTACHMENT_XLSX '
+        if not self.find("ATTACHMENT_XLSX", matching=0.87, waiting_time=10000):
+            self.not_found("ATTACHMENT_XLSX")
+
+        self.enter()
+
+    def quit_browser(self, timeout=10):
+        time.sleep(timeout)
+        self.type_keys(["ctrl", "w"])
+
+    def run(self):
+        self.start_browser()
+        self.send_attachment()
+        self.quit_browser()
+
+    def not_found(self, element):
+        print(
+            f'\n>>{Fore.CYAN}{time.strftime("%X")} -- {Fore.RED}O elemento {element} não foi encontrado{Style.RESET_ALL}\n'
+        )
+
+
+def main():
+    bi_bot = BiBot()
+    bi_bot.run()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "debug":
+            print(
+                f">> {Fore.WHITE}{time.strftime('%X')} [INFO] {Fore.MAGENTA}Debug mode activate [INFO] {Style.RESET_ALL}",
+                end="\r",
+            )
+            main()
+    else:
+        schedule.every(1).day.at("12:00").do(main)
+        while True:
+            print(
+                f">> {Fore.BLUE}{time.strftime('%X')} -- {Fore.GREEN}Aguardando o horario correto!!{Style.RESET_ALL}",
+                end="\r",
+            )
+            schedule.run_pending()
+            time.sleep(1)
