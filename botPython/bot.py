@@ -13,9 +13,11 @@ data_path = os.path.join(os.getcwd(), "data")
 os.makedirs(data_path, exist_ok=True)
 """python -m cookiecutter https://github.com/botcity-dev/bot-python-template/archive/v2.zip"""
 ID_GROUP = os.getenv("ID_GROUP")
-print(f"grupo á enviar conteudo: {ID_GROUP}")
+print(">" * 100)
+print(f"{Fore.CYAN} grupo á enviar conteudo: {ID_GROUP} {Style.RESET_ALL}")
 PHONE_NUMBER = os.getenv("PHONE_NUMBER")
-print(f"numero á enviar conteudo: {PHONE_NUMBER}")
+print(f"{Fore.YELLOW} numero á enviar conteudo: {PHONE_NUMBER} {Style.RESET_ALL}")
+print("<" * 100)
 
 
 class BiBot(DesktopBot):
