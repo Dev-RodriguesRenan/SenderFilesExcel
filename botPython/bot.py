@@ -102,7 +102,7 @@ Bom final de semana e ótimas análises! 💪😎
 
         self.enter()
 
-    def quit_browser(self, timeout=10):
+    def quit_browser(self, timeout=20):
         time.sleep(timeout)
         self.type_keys(["ctrl", "w"])
 
@@ -137,7 +137,7 @@ if __name__ == "__main__":
             )
             main(debug=False)
     else:
-        schedule.every(1).friday.at("12:00").do(main)
+        schedule.every().friday.at("12:00").do(main)
         while True:
             print(
                 f">> {Fore.BLUE}{time.strftime('%X')} -- {Fore.GREEN}Aguardando o horario correto!!{Style.RESET_ALL}",
@@ -145,3 +145,15 @@ if __name__ == "__main__":
             )
             schedule.run_pending()
             time.sleep(1)
+
+    """
+    TODO: Traduzir os dias da semana
+    Inglês	    ->  Português (PT-BR)
+    Monday	    ->  Segunda-feira
+    Tuesday	    ->  Terça-feira
+    Wednesday   ->  Quarta-feira
+    Thursday    ->  Quinta-feira
+    Friday	    ->  Sexta-feira
+    Saturday	->  Sábado
+    Sunday	    ->  Domingo
+    """
