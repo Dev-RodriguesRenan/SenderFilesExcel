@@ -1,5 +1,6 @@
 import os
 import datetime
+import sys
 import time
 from dotenv import load_dotenv
 from pathlib import Path
@@ -70,9 +71,15 @@ Bom final de semana e ótimas análises!
 """
     attachment = Path("data/Links BI Vendedores.xlsx")
     contact = os.getenv("CONTATO")
-    with WhatsApp_Handler() as whatsapp_handler:
-        whatsapp_handler.enviar_mensagem(contact, message, attachment)
-    print("Mensagem enviada com sucesso!")
+    try:
+        with WhatsApp_Handler() as whatsapp_handler:
+            whatsapp_handler.enviar_mensagem(contact, message, attachment)
+        print("Mensagem enviada com sucesso!")
+        sys.exit()
+    except Exception as e:
+        print(f"Erro ao enviar mensagem: {e}")
+        input("Pressione Enter ou CTRL+C para sair...")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -80,6 +87,9 @@ if __name__ == "__main__":
     # Schedule the job every Friday at 12:00 PM
     schedule.every().friday.at("12:00").do(main)
     while True:
-        print(f'{time.strftime("%X")} - INFO - Aguardando o horário programado...')
+        print(
+            f'{time.strftime("%X")} - INFO - Aguardando o horário programado...   Pressione CTRL+C para parar!!',
+            end="\r",
+        )
         schedule.run_pending()
         time.sleep(1)
