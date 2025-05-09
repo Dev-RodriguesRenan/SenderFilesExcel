@@ -76,7 +76,10 @@ Bom final de semana e ótimas análises!
 
 
 if __name__ == "__main__":
+    print(f'{time.strftime("%X")} - INFO - Iniciando o envio de mensagens...')
+    # Schedule the job every Friday at 12:00 PM
     schedule.every().friday.at("12:00").do(main)
     while True:
+        print(f'{time.strftime("%X")} - INFO - Aguardando o horário programado...')
         schedule.run_pending()
         time.sleep(1)
