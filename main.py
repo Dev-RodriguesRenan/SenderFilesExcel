@@ -53,7 +53,7 @@ class WhatsApp_Handler:
 
         self.whatsapp.find_by_username(contact)
         # Envia a mensagem
-        # self.whatsapp.send_file(attachment, which=2)
+        self.whatsapp.send_file(attachment, which=2)
         self.whatsapp.send_message(message)
 
 
@@ -85,7 +85,6 @@ Bom final de semana e ótimas análises! 💪😎
 if __name__ == "__main__":
     print(f'{time.strftime("%X")} - INFO - Iniciando o envio de mensagens...')
     # Schedule the job every Friday at 12:00 PM
-    main()
     schedule.every().friday.at("12:00").do(main)
     while True:
         print(
