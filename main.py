@@ -5,7 +5,7 @@ import time
 from dotenv import load_dotenv
 from pathlib import Path
 import schedule
-from vjwhats import WhatsApp
+from wrapper_vjwhats import WhatsApp
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -53,21 +53,21 @@ class WhatsApp_Handler:
 
         self.whatsapp.find_by_username(contact)
         # Envia a mensagem
-        self.whatsapp.send_file(attachment, which=2)
+        # self.whatsapp.send_file(attachment, which=2)
         self.whatsapp.send_message(message)
 
 
 def main():
     message = """
-Lembrete Importante!
+🔔 Lembrete Importante!
 
-Não deixem de acessar nossa ferramenta de análise de dados!
+Não deixem de acessar nossa ferramenta de análise de dados! 📊
 Lá, vocês conseguem acompanhar o desempenho diário, semanal, mensal e trimestral, tendo uma visão completa dos resultados alcançados.
 
-Acompanhem seu progresso e mantenham-se informados sobre o seu desempenho!
+🚀 Acompanhem seu progresso e mantenham-se informados sobre o seu desempenho!
 Qualquer dúvida, estamos à disposição para ajudar!
 
-Bom final de semana e ótimas análises!
+Bom final de semana e ótimas análises! 💪😎
 """
     attachment = Path("data/Links BI Vendedores.xlsx")
     contact = os.getenv("CONTATO")
@@ -85,6 +85,7 @@ Bom final de semana e ótimas análises!
 if __name__ == "__main__":
     print(f'{time.strftime("%X")} - INFO - Iniciando o envio de mensagens...')
     # Schedule the job every Friday at 12:00 PM
+    main()
     schedule.every().friday.at("12:00").do(main)
     while True:
         print(
