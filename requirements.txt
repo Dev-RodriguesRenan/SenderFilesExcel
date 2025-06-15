@@ -1,2 +1,3 @@
 selenium==4.32.0
 vjwhats==1.1
+clipboard
