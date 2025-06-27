@@ -37,6 +37,7 @@ class WhatsApp_Handler:
                     service=self.service, options=self.chrome_options
                 )
                 self.whatsapp = WhatsApp(self.driver)
+
                 return self
             except Exception as e:
                 print(f"Erro ao inicializar o driver do Chrome: {e}")
@@ -49,7 +50,7 @@ class WhatsApp_Handler:
             self.driver.quit()
 
     def enviar_mensagem(self, contact, message, attachment):
-        message += "\n\n" + f'> {datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")}'
+        message += "\n\n" + f"> {datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}"
 
         self.whatsapp.find_by_username(contact)
         # Envia a mensagem
@@ -83,12 +84,12 @@ Bom final de semana e ótimas análises! 💪😎
 
 
 if __name__ == "__main__":
-    print(f'{time.strftime("%X")} - INFO - Iniciando o envio de mensagens...')
+    print(f"{time.strftime('%X')} - INFO - Iniciando o envio de mensagens...")
     # Schedule the job every Friday at 12:00 PM
     schedule.every().friday.at("12:00").do(main)
     while True:
         print(
-            f'{time.strftime("%X")} - INFO - Aguardando o horário programado...   Pressione CTRL+C para parar!!',
+            f"{time.strftime('%X')} - INFO - Aguardando o horário programado...   Pressione CTRL+C para parar!!",
             end="\r",
         )
         schedule.run_pending()
